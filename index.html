@@ -4,6 +4,15 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PUMP — Gas Price Intelligence</title>
+<!-- Ezoic Privacy Scripts (must load first) -->
+<script data-cfasync="false" src="https://cmp.gatekeeperconsent.com/min.js"></script>
+<script data-cfasync="false" src="https://the.gatekeeperconsent.com/cmp.min.js"></script>
+<!-- Ezoic Header Script -->
+<script async src="//www.ezojs.com/ezoic/sa.min.js"></script>
+<script>
+  window.ezstandalone = window.ezstandalone || {};
+  ezstandalone.cmd = ezstandalone.cmd || [];
+</script>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@300;400;600&display=swap" rel="stylesheet">
 <style>
   :root { --black:#0a0a0a;--white:#f0ede6;--red:#e63329;--yellow:#f5c842;--gray:#1a1a1a;--mid:#2a2a2a;--text-muted:#666; }
@@ -199,12 +208,22 @@
 
 </div>
 
-<div class="ad-slot">Advertisement — Ezoic Ad Unit</div>
+<!-- Ezoic Ad Unit #101 — Leaderboard below content -->
+<div id="ezoic-pub-ad-placeholder-101" style="margin:0 40px 40px;"></div>
 
 <footer>
   <div class="logo-sm">PUMP.</div>
   <p>Data: U.S. Energy Information Administration (EIA) · Updated weekly · Not financial advice</p>
 </footer>
+
+<script>
+  // Enable Ezoic ad placeholders
+  ezstandalone.cmd.push(function() {
+    ezstandalone.define(101);
+    ezstandalone.enable();
+    ezstandalone.display();
+  });
+</script>
 
 <script>
 const API_KEY = 'SrX4V9FvOLr7zglTgdmZrwBmN8vVnEVPDnELdjcz';
