@@ -208,7 +208,6 @@
 
 </div>
 
-<!-- Ezoic Ad Unit #101 — Leaderboard below content -->
 <!-- Ezoic - top_of_page - top_of_page -->
 <div id="ezoic-pub-ad-placeholder-137"></div>
 <!-- End Ezoic - top_of_page - top_of_page -->
@@ -232,7 +231,9 @@
 </script>
 
 <script>
-const API_KEY = 'SrX4V9FvOLr7zglTgdmZrwBmN8vVnEVPDnELdjcz';
+function sanitize(str) {
+  return String(str).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
 
 const now = new Date();
 document.getElementById('headerDate').textContent =
@@ -240,19 +241,13 @@ document.getElementById('headerDate').textContent =
   ' — ' + now.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}) + ' ET';
 
 async function fetchNational() {
-  const url = `https://api.eia.gov/v2/petroleum/pri/gnd/data/?api_key=${API_KEY}&frequency=weekly&data[0]=value&facets[product][]=EPM0&facets[duoarea][]=NUS&sort[0][column]=period&sort[0][direction]=desc&length=13`;
-  const r = await fetch(url);
-  const j = await r.json();
-  return j.response?.data || [];
+  const r = await fetch('/api/national');
+  return r.json();
 }
 
 async function fetchRegional() {
-  const areas = ['R10','R20','R30','R40','R50'];
-  const facets = areas.map(a => `facets[duoarea][]=${a}`).join('&');
-  const url = `https://api.eia.gov/v2/petroleum/pri/gnd/data/?api_key=${API_KEY}&frequency=weekly&data[0]=value&facets[product][]=EPM0&${facets}&sort[0][column]=period&sort[0][direction]=desc&length=10`;
-  const r = await fetch(url);
-  const j = await r.json();
-  return j.response?.data || [];
+  const r = await fetch('/api/regional');
+  return r.json();
 }
 
 function renderHero(data) {
@@ -268,10 +263,10 @@ function renderHero(data) {
   document.getElementById('heroMeta').innerHTML = `
     <div class="hero-stat"><div class="label">Week over week</div><div class="value ${wow>=0?'up':'down'}">${wow>=0?'▲':'▼'} ${wow>=0?'+':''}$${wow}</div></div>
     <div class="hero-stat"><div class="label">Month over month</div><div class="value ${mom>=0?'up':'down'}">${mom>=0?'▲':'▼'} ${mom>=0?'+':''}$${mom}</div></div>
-    <div class="hero-stat"><div class="label">As of</div><div class="value">${data[0].period}</div></div>
+    <div class="hero-stat"><div class="label">As of</div><div class="value">${sanitize(data[0].period)}</div></div>
     <div class="hero-stat"><div class="label">Pre-war est.</div><div class="value up">▲ +$0.61</div></div>`;
   document.getElementById('tickerText').innerHTML =
-    `&nbsp;&nbsp;&nbsp;&nbsp;⚡ BREAKING: US-IRAN CEASEFIRE REACHED — STRAIT OF HORMUZ TO REOPEN &nbsp;&nbsp;&nbsp;&nbsp;•&nbsp;&nbsp;&nbsp;&nbsp; NATIONAL AVERAGE: $${cur.toFixed(2)}/GAL (${data[0].period}) &nbsp;&nbsp;&nbsp;&nbsp;•&nbsp;&nbsp;&nbsp;&nbsp; ANALYSTS FORECAST $0.30–$0.50 DROP WITHIN 2 WEEKS &nbsp;&nbsp;&nbsp;&nbsp;•&nbsp;&nbsp;&nbsp;&nbsp; BRENT CRUDE DOWN 4.2% ON CEASEFIRE NEWS &nbsp;&nbsp;&nbsp;&nbsp;`;
+    `&nbsp;&nbsp;&nbsp;&nbsp;⚡ BREAKING: US-IRAN CEASEFIRE REACHED — STRAIT OF HORMUZ TO REOPEN &nbsp;&nbsp;&nbsp;&nbsp;•&nbsp;&nbsp;&nbsp;&nbsp; NATIONAL AVERAGE: $${cur.toFixed(2)}/GAL (${sanitize(data[0].period)})&nbsp;&nbsp;&nbsp;&nbsp;•&nbsp;&nbsp;&nbsp;&nbsp; ANALYSTS FORECAST $0.30–$0.50 DROP WITHIN 2 WEEKS &nbsp;&nbsp;&nbsp;&nbsp;•&nbsp;&nbsp;&nbsp;&nbsp; BRENT CRUDE DOWN 4.2% ON CEASEFIRE NEWS &nbsp;&nbsp;&nbsp;&nbsp;`;
   document.getElementById('fc1').textContent = `$${cur.toFixed(2)}`;
   document.getElementById('fc2').textContent = `$${(cur-.25).toFixed(2)}`;
   document.getElementById('fc3').textContent = `$${(cur-.43).toFixed(2)}`;
