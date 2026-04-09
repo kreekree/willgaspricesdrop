@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gas Prices by Region 2026 — East Coast, Midwest, Gulf Coast, West Coast</title>
+<meta name="description" content="Live US gas prices by region for 2026. Compare East Coast, Midwest, Gulf Coast, Rocky Mountain, and West Coast averages. Updated weekly from EIA PADD district data.">
+<link rel="canonical" href="https://www.willgaspricesdrop.com/gas-prices-by-region.html">
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-THJDZ07TQ6"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-THJDZ07TQ6');
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {"@type":"Question","name":"Which US region has the cheapest gas prices?","acceptedAnswer":{"@type":"Answer","text":"The Gulf Coast (PADD 3) consistently has the cheapest gas prices in the US due to its proximity to the largest refinery complex in the country. Gulf Coast states — Texas, Louisiana, Mississippi, Alabama, and Arkansas — typically average $0.30–$0.60/gal below the national average."}},
+    {"@type":"Question","name":"Which US region has the most expensive gas?","acceptedAnswer":{"@type":"Answer","text":"The West Coast (PADD 5), particularly California, consistently has the most expensive gas in the US. West Coast prices are typically $0.60–$1.20/gal above the national average due to California's high taxes, CARB fuel blend requirements, and limited pipeline connections to Gulf Coast supply."}}
+  ]
+}
+</script>
+
+<!-- Ezoic Privacy Scripts -->
+<script data-cfasync="false" src="https://cmp.gatekeeperconsent.com/min.js"></script>
+<script data-cfasync="false" src="https://the.gatekeeperconsent.com/cmp.min.js"></script>
+<script async src="//www.ezojs.com/ezoic/sa.min.js"></script>
+<script>window.ezstandalone = window.ezstandalone || {}; ezstandalone.cmd = ezstandalone.cmd || [];</script>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  :root{--black:#0a0a0a;--white:#f0ede6;--red:#e63329;--yellow:#f5c842;--gray:#1a1a1a;--text-muted:#666;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--black);color:var(--white);font-family:'IBM Plex Sans',sans-serif;min-height:100vh;}
+  header{border-bottom:1px solid #222;padding:20px 40px;display:flex;align-items:center;justify-content:space-between;}
+  .logo{font-family:'Bebas Neue',sans-serif;font-size:42px;letter-spacing:4px;color:var(--yellow);line-height:1;text-decoration:none;}
+  .logo span{color:var(--red);}
+  .header-right{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--text-muted);}
+  .breadcrumb{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--text-muted);letter-spacing:1px;padding:12px 40px;border-bottom:1px solid #1a1a1a;}
+  .breadcrumb a{color:var(--text-muted);text-decoration:none;}
+  .page-hero{padding:60px 40px 40px;border-bottom:1px solid #222;}
+  .hero-label{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:3px;color:var(--red);text-transform:uppercase;margin-bottom:16px;}
+  .hero-title{font-family:'Bebas Neue',sans-serif;font-size:72px;line-height:.9;color:var(--white);letter-spacing:-1px;margin-bottom:20px;}
+  .hero-sub{font-size:15px;color:#aaa;line-height:1.7;font-weight:300;max-width:680px;}
+  .region-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:#1a1a1a;margin:40px;border:1px solid #1a1a1a;}
+  .region-card{background:var(--black);padding:28px;}
+  .region-card .padd{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--text-muted);margin-bottom:6px;}
+  .region-card h2{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:2px;color:var(--white);margin-bottom:4px;}
+  .region-card .states{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--text-muted);margin-bottom:16px;line-height:1.6;}
+  .region-card .price{font-family:'Bebas Neue',sans-serif;font-size:52px;line-height:1;}
+  .region-card .change{font-family:'IBM Plex Mono',monospace;font-size:11px;margin-top:4px;}
+  .region-card .bar-bg{height:4px;background:#1a1a1a;margin-top:16px;}
+  .region-card .bar-fill{height:100%;background:var(--red);transition:width 1s ease;}
+  .loading-spinner{width:12px;height:12px;border:2px solid #333;border-top-color:var(--yellow);border-radius:50%;animation:spin .8s linear infinite;display:inline-block;}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .up{color:var(--red);}.down{color:#4caf7d;}
+  .content{padding:0 40px 40px;max-width:880px;}
+  h2.section{font-family:'Bebas Neue',sans-serif;font-size:36px;letter-spacing:2px;color:var(--white);margin:40px 0 16px;}
+  p{font-size:15px;color:#bbb;line-height:1.8;margin-bottom:14px;font-weight:300;}
+  strong{color:var(--white);}
+  a{color:var(--yellow);text-decoration:none;}
+  a:hover{text-decoration:underline;}
+  .faq-section{background:#0f0f0f;padding:40px;border-top:1px solid #222;}
+  .faq-section h2{font-family:'Bebas Neue',sans-serif;font-size:32px;letter-spacing:2px;margin-bottom:24px;}
+  .faq-item{border-bottom:1px solid #1a1a1a;padding:18px 0;}
+  .faq-item:last-child{border-bottom:none;}
+  .faq-item h3{font-size:15px;font-weight:600;margin-bottom:8px;}
+  .faq-item p{font-size:14px;color:#999;margin:0;}
+  footer{border-top:1px solid #1a1a1a;padding:20px 40px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;}
+  footer .logo-sm{font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--yellow);letter-spacing:3px;}
+  footer p{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--text-muted);letter-spacing:1px;}
+  footer nav{display:flex;gap:20px;flex-wrap:wrap;}
+  footer nav a{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--text-muted);letter-spacing:1px;text-decoration:none;}
+  footer nav a:hover{color:var(--white);}
+  @media(max-width:768px){
+    header{padding:16px 20px;}.logo{font-size:28px;}
+    .page-hero{padding:40px 20px;}.hero-title{font-size:48px;}
+    .region-grid{margin:20px;grid-template-columns:1fr;}
+    .content{padding:0 20px 24px;}
+    .breadcrumb{padding:10px 20px;}
+    .faq-section{padding:24px 20px;}
+    footer{padding:16px 20px;flex-direction:column;text-align:center;}footer nav{justify-content:center;}
+  }
+</style>
+</head>
+<body>
+<header>
+  <a href="/" class="logo">PUMP<span>.</span></a>
+  <div class="header-right">SOURCE: EIA.GOV · UPDATED WEEKLY</div>
+</header>
+<div class="breadcrumb"><a href="/">Home</a> &nbsp;/&nbsp; Gas Prices by Region</div>
+<div id="ezoic-pub-ad-placeholder-137"></div>
+
+<main>
+<div class="page-hero">
+  <p class="hero-label">⛽ Live PADD Data — Updated Weekly</p>
+  <h1 class="hero-title">Gas Prices<br>by Region</h1>
+  <p class="hero-sub">Live gas prices for all 5 US petroleum regions (PADD districts), updated weekly from EIA data. See which region is cheapest and how the 2026 crisis has affected each area differently.</p>
+</div>
+
+<div id="ezoic-pub-ad-placeholder-130"></div>
+
+<div class="region-grid" id="regionGrid">
+  <div class="region-card"><div class="padd">PADD 1</div><h2>East Coast</h2><div class="price"><span class="loading-spinner"></span></div></div>
+  <div class="region-card"><div class="padd">PADD 2</div><h2>Midwest</h2><div class="price"><span class="loading-spinner"></span></div></div>
+  <div class="region-card"><div class="padd">PADD 3</div><h2>Gulf Coast</h2><div class="price"><span class="loading-spinner"></span></div></div>
+  <div class="region-card"><div class="padd">PADD 4</div><h2>Rocky Mountain</h2><div class="price"><span class="loading-spinner"></span></div></div>
+  <div class="region-card" style="grid-column:1/-1"><div class="padd">PADD 5</div><h2>West Coast</h2><div class="price"><span class="loading-spinner"></span></div></div>
+</div>
+
+<div id="ezoic-pub-ad-placeholder-132"></div>
+
+<div class="content">
+
+<h2 class="section">About the PADD Regions</h2>
+<p>The EIA divides the US into 5 Petroleum Administration for Defense Districts (PADDs), originally created during World War II to coordinate fuel rationing. Today they remain the primary framework for tracking regional fuel supply and pricing.</p>
+<p><strong>PADD 1 — East Coast:</strong> CT, DE, FL, GA, ME, MD, MA, NH, NJ, NY, NC, PA, RI, SC, VT, VA, WV, DC. The most populous region. Heavily dependent on pipeline deliveries from Gulf Coast refineries and imports via East Coast ports. New England (sub-region) often pays a premium due to distance from refineries.</p>
+<p><strong>PADD 2 — Midwest:</strong> IL, IN, IA, KS, KY, MI, MN, MO, NE, ND, OH, OK, SD, TN, WI. Major refining hub (Chicago area). Served by multiple pipelines from Gulf Coast and Canada. Typically prices in the middle of the national range.</p>
+<p><strong>PADD 3 — Gulf Coast:</strong> AL, AR, LA, MS, NM, TX. The lowest-cost region, home to the largest refinery complex in the world. Refineries here produce gasoline for much of the eastern US. Minimal transport costs keep retail prices low.</p>
+<p><strong>PADD 4 — Rocky Mountain:</strong> CO, ID, MT, UT, WY. A landlocked region with limited pipeline connections. Relies on local refineries. Prices vary more here due to logistics challenges and thinner competition.</p>
+<p><strong>PADD 5 — West Coast:</strong> AK, AZ, CA, HI, NV, OR, WA. The most expensive region, dominated by California's premium pricing. California's CARB fuel blend requirements create a semi-isolated market that frequently diverges from national trends.</p>
+
+<p>For state-level detail, see our <a href="/gas-prices-by-state.html">gas prices by state page</a>. For the national outlook, read our <a href="/gas-price-forecast-2026.html">2026 forecast</a>.</p>
+
+</div>
+
+<div class="faq-section">
+  <h2>Regional FAQs</h2>
+  <div class="faq-item">
+    <h3>Which US region has the cheapest gas prices?</h3>
+    <p>The Gulf Coast (PADD 3) consistently has the cheapest gas in the US, driven by proximity to the nation's largest refinery complex in Texas and Louisiana. Gulf Coast states typically pay $0.30–$0.60/gal below the national average.</p>
+  </div>
+  <div class="faq-item">
+    <h3>Why does the West Coast pay so much more for gas?</h3>
+    <p>California dominates the West Coast (PADD 5) average. The state has the highest gas taxes in the US (57.9¢/gal), requires unique CARB-compliant fuel blends that can only be produced locally, and has limited pipeline access to cheaper Gulf Coast supply. These structural factors add $1.00–$1.50/gal above Texas prices.</p>
+  </div>
+  <div class="faq-item">
+    <h3>What is a PADD district?</h3>
+    <p>Petroleum Administration for Defense Districts — five geographic regions created by the US government in the 1940s to coordinate fuel distribution during World War II. They remain the EIA's primary framework for tracking regional petroleum supply, demand, and pricing today.</p>
+  </div>
+</div>
+</main>
+
+<footer>
+  <div class="logo-sm">PUMP.</div>
+  <p>Data: EIA PADD Districts · Updated weekly · Not financial advice</p>
+  <nav>
+    <a href="/">Home</a>
+    <a href="/gas-prices-by-state.html">By State</a>
+    <a href="/gas-price-forecast-2026.html">Forecast</a>
+    <a href="/about.html">About</a>
+    <a href="/contact.html">Contact</a>
+    <a href="/privacy-policy.html">Privacy</a>
+  </nav>
+</footer>
+<script>
+  ezstandalone.cmd.push(function(){ezstandalone.showAds(137,130,132);});
+
+  const REGIONS = {
+    R10:{name:'East Coast',padd:'PADD 1',states:'CT, FL, GA, MA, MD, ME, NC, NJ, NY, PA, VA, WV + more'},
+    R20:{name:'Midwest',padd:'PADD 2',states:'IL, IN, IA, KS, KY, MI, MN, MO, OH, WI + more'},
+    R30:{name:'Gulf Coast',padd:'PADD 3',states:'AL, AR, LA, MS, NM, TX'},
+    R40:{name:'Rocky Mountain',padd:'PADD 4',states:'CO, ID, MT, UT, WY'},
+    R50:{name:'West Coast',padd:'PADD 5',states:'AK, AZ, CA, HI, NV, OR, WA'},
+  };
+
+  function sanitize(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+
+  fetch('/api/regional').then(r=>r.json()).then(data=>{
+    const byRegion={};
+    for(const row of data){
+      const code=row.duoarea;
+      if(!byRegion[code])byRegion[code]=[];
+      if(byRegion[code].length<2)byRegion[code].push(parseFloat(row.value));
+    }
+    const prices=Object.values(byRegion).filter(v=>v.length>0).map(v=>v[0]);
+    const maxP=Math.max(...prices), minP=Math.min(...prices), range=maxP-minP||1;
+
+    const cards=document.querySelectorAll('.region-card');
+    let i=0;
+    for(const [code,info] of Object.entries(REGIONS)){
+      const vals=byRegion[code]||[];
+      const card=cards[i++];
+      if(!card)continue;
+      const cur=vals[0]||null;
+      const prev=vals[1]||cur;
+      const chg=cur&&prev?(cur-prev).toFixed(2):null;
+      const pct=cur?Math.round(((cur-minP)/range)*100):50;
+      const chgStr=chg?`<div class="change ${chg>=0?'up':'down'}">${chg>=0?'▲ +':'▼ '}$${Math.abs(chg)}/gal</div>`:'';
+      card.innerHTML=`
+        <div class="padd">${sanitize(info.padd)}</div>
+        <h2>${sanitize(info.name)}</h2>
+        <div class="states">${sanitize(info.states)}</div>
+        <div class="price ${cur?'':''}">$${cur?cur.toFixed(2):'N/A'}</div>
+        ${chgStr}
+        <div class="bar-bg"><div class="bar-fill" style="width:${pct}%"></div></div>`;
+    }
+  }).catch(()=>{
+    document.getElementById('regionGrid').innerHTML='<div style="padding:24px;font-family:monospace;font-size:12px;color:#666;">Failed to load regional data.</div>';
+  });
+</script>
+</body>
+</html>
