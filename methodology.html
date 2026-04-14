@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Data & Methodology — How We Track US Gas Prices</title>
+<meta name="description" content="How WillGasPricesDrop.com collects, processes, and displays US gas price data. Full methodology: EIA API sources, calculation logic, update frequency, and known limitations.">
+<link rel="canonical" href="https://www.willgaspricesdrop.com/methodology.html">
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-THJDZ07TQ6"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-THJDZ07TQ6');
+</script>
+<script defer src="https://umami-production-943c.up.railway.app/script.js" data-website-id="8ea8eb2b-3eec-4945-95c2-68e7350bfce4"></script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Dataset",
+  "name": "US Weekly Retail Gasoline Prices — WillGasPricesDrop.com",
+  "description": "Weekly US retail gasoline prices by region and state, sourced directly from the U.S. Energy Information Administration (EIA) API v2. Includes national average, PADD regional averages, and state-level data where available.",
+  "url": "https://www.willgaspricesdrop.com/methodology.html",
+  "identifier": "https://www.willgaspricesdrop.com/methodology.html",
+  "keywords": ["gas prices", "gasoline prices", "US fuel prices", "EIA data", "retail gasoline"],
+  "license": "https://www.eia.gov/about/copyrights_reuse.php",
+  "isAccessibleForFree": true,
+  "creator": {
+    "@type": "Organization",
+    "name": "Will Gas Prices Drop",
+    "url": "https://www.willgaspricesdrop.com/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Will Gas Prices Drop",
+    "url": "https://www.willgaspricesdrop.com/"
+  },
+  "distribution": [
+    {
+      "@type": "DataDownload",
+      "encodingFormat": "application/json",
+      "contentUrl": "https://api.eia.gov/v2/petroleum/pri/gnd/data/"
+    }
+  ],
+  "temporalCoverage": "2000-01-01/",
+  "spatialCoverage": {
+    "@type": "Place",
+    "name": "United States"
+  },
+  "variableMeasured": [
+    {
+      "@type": "PropertyValue",
+      "name": "Regular Gasoline Price",
+      "unitText": "Dollars per Gallon"
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "Midgrade Gasoline Price",
+      "unitText": "Dollars per Gallon"
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "Premium Gasoline Price",
+      "unitText": "Dollars per Gallon"
+    }
+  ]
+}
+</script>
+
+<!-- Ezoic Privacy Scripts -->
+<script data-cfasync="false" src="https://cmp.gatekeeperconsent.com/min.js"></script>
+<script data-cfasync="false" src="https://the.gatekeeperconsent.com/cmp.min.js"></script>
+<script async src="//www.ezojs.com/ezoic/sa.min.js"></script>
+<script>window.ezstandalone = window.ezstandalone || {}; ezstandalone.cmd = ezstandalone.cmd || [];</script>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  :root{--black:#0a0a0a;--white:#f0ede6;--red:#e63329;--yellow:#f5c842;--gray:#1a1a1a;--text-muted:#666;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--black);color:var(--white);font-family:'IBM Plex Sans',sans-serif;min-height:100vh;}
+  header{border-bottom:1px solid #222;padding:20px 40px;display:flex;align-items:center;justify-content:space-between;}
+  .logo{font-family:'Bebas Neue',sans-serif;font-size:42px;letter-spacing:4px;color:var(--yellow);line-height:1;text-decoration:none;}
+  .logo span{color:var(--red);}
+  .header-right{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--text-muted);text-align:right;line-height:1.8;}
+  .breadcrumb{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--text-muted);letter-spacing:1px;padding:12px 40px;border-bottom:1px solid #1a1a1a;}
+  .breadcrumb a{color:var(--text-muted);text-decoration:none;}
+  .breadcrumb a:hover{color:var(--white);}
+  .page-hero{padding:60px 40px 40px;border-bottom:1px solid #222;}
+  .hero-label{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:3px;color:var(--red);text-transform:uppercase;margin-bottom:16px;}
+  .hero-title{font-family:'Bebas Neue',sans-serif;font-size:72px;line-height:.9;color:var(--white);letter-spacing:-1px;margin-bottom:20px;}
+  .hero-sub{font-size:15px;color:#aaa;line-height:1.7;font-weight:300;max-width:680px;}
+  .meta-row{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--text-muted);letter-spacing:1px;margin-top:20px;display:flex;gap:24px;flex-wrap:wrap;}
+  .content{padding:60px 40px;max-width:860px;}
+  h2.section{font-family:'Bebas Neue',sans-serif;font-size:36px;letter-spacing:2px;color:var(--white);margin:48px 0 16px;}
+  h2.section:first-child{margin-top:0;}
+  h3.sub{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:2px;text-transform:uppercase;color:var(--yellow);margin:28px 0 10px;}
+  p{font-size:15px;color:#bbb;line-height:1.8;margin-bottom:16px;font-weight:300;}
+  strong{color:var(--white);}
+  a{color:var(--yellow);text-decoration:none;}
+  a:hover{text-decoration:underline;}
+  code{font-family:'IBM Plex Mono',monospace;font-size:12px;background:#111;color:#aaa;padding:2px 6px;border:1px solid #2a2a2a;}
+  .source-card{border:1px solid #222;padding:24px 28px;margin:24px 0;}
+  .source-card .src-label{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--red);margin-bottom:8px;}
+  .source-card h3{font-size:16px;font-weight:600;color:var(--white);margin-bottom:10px;}
+  .source-card p{font-size:14px;color:#999;margin:0;}
+  .source-card a{color:var(--yellow);}
+  .data-table{width:100%;border-collapse:collapse;margin:24px 0;font-size:13px;}
+  .data-table thead tr{border-bottom:2px solid #222;}
+  .data-table th{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--text-muted);text-align:left;padding:10px 16px;}
+  .data-table tbody tr{border-bottom:1px solid #111;}
+  .data-table tbody tr:hover{background:#0f0f0f;}
+  .data-table td{padding:12px 16px;color:#bbb;vertical-align:top;}
+  .data-table td:first-child{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--yellow);}
+  .callout{background:#0f0f0f;border-left:3px solid var(--yellow);padding:20px 24px;margin:28px 0;}
+  .callout p{font-size:14px;color:#aaa;margin:0;line-height:1.7;}
+  .callout strong{color:var(--white);}
+  .price-components{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:#222;margin:24px 0;}
+  .pc-item{background:var(--black);padding:20px 24px;}
+  .pc-item .pct{font-family:'Bebas Neue',sans-serif;font-size:40px;color:var(--yellow);line-height:1;margin-bottom:6px;}
+  .pc-item .label{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--text-muted);margin-bottom:8px;}
+  .pc-item p{font-size:13px;color:#888;margin:0;}
+  footer{border-top:1px solid #1a1a1a;padding:20px 40px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-top:40px;}
+  footer .logo-sm{font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--yellow);letter-spacing:3px;}
+  footer p{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--text-muted);letter-spacing:1px;}
+  footer nav{display:flex;gap:20px;flex-wrap:wrap;}
+  footer nav a{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--text-muted);letter-spacing:1px;text-decoration:none;}
+  footer nav a:hover{color:var(--white);}
+  @media(max-width:768px){
+    header{padding:16px 20px;}.logo{font-size:28px;}
+    .page-hero{padding:40px 20px 24px;}.hero-title{font-size:48px;}
+    .breadcrumb{padding:10px 20px;}
+    .content{padding:40px 20px;}
+    .price-components{grid-template-columns:1fr;}
+    .meta-row{flex-direction:column;gap:6px;}
+    footer{padding:16px 20px;flex-direction:column;text-align:center;}
+    footer nav{justify-content:center;}
+  }
+</style>
+</head>
+<body>
+<header>
+  <a href="/" class="logo">PUMP<span>.</span></a>
+  <div class="header-right">SOURCE: EIA.GOV · UPDATED WEEKLY</div>
+</header>
+
+<div class="breadcrumb">
+  <a href="/">Home</a> &nbsp;/&nbsp; Data & Methodology
+</div>
+
+<div id="ezoic-pub-ad-placeholder-137"></div>
+
+<main>
+<div class="page-hero">
+  <p class="hero-label">Transparency</p>
+  <h1 class="hero-title">Data &amp; Methodology</h1>
+  <p class="hero-sub">Every price displayed on this site comes from a specific, verifiable source. This page documents exactly where our data comes from, how it is processed, and what its limitations are.</p>
+  <div class="meta-row">
+    <span>Last updated: April 13, 2026</span>
+    <span>Primary source: U.S. EIA API v2</span>
+    <span>Update frequency: Weekly (Monday)</span>
+  </div>
+</div>
+
+<div id="ezoic-pub-ad-placeholder-130"></div>
+
+<div class="content">
+
+<h2 class="section">Primary Data Source</h2>
+<p>All gas price data displayed on WillGasPricesDrop.com originates from the <strong>U.S. Energy Information Administration (EIA)</strong> — the federal statistical agency responsible for collecting, analyzing, and publishing energy data in the United States. The EIA is a branch of the U.S. Department of Energy and is widely regarded as the most authoritative source of energy price data in the country.</p>
+
+<div class="source-card">
+  <div class="src-label">Primary Source</div>
+  <h3>EIA Weekly Retail Gasoline Prices Survey</h3>
+  <p>Published every Monday at approximately 4:00 PM EST. Covers national, regional (PADD), and state-level retail prices for regular, midgrade, and premium unleaded gasoline. Data reflects prices from the previous Monday–Sunday survey period. Official source: <a href="https://www.eia.gov/petroleum/gasprices/" target="_blank" rel="noopener noreferrer">eia.gov/petroleum/gasprices</a></p>
+</div>
+
+<div class="source-card">
+  <div class="src-label">API Access</div>
+  <h3>EIA Open Data API v2</h3>
+  <p>We connect to EIA's public API to retrieve data automatically as soon as it is published each Monday. The specific endpoint used is <code>api.eia.gov/v2/petroleum/pri/gnd/data/</code> — the petroleum retail gasoline and diesel prices series. The EIA API is free, publicly accessible, and requires a free API key. Full documentation: <a href="https://www.eia.gov/opendata/" target="_blank" rel="noopener noreferrer">eia.gov/opendata</a></p>
+</div>
+
+<h2 class="section">Geographic Coverage</h2>
+<p>The EIA's weekly retail gasoline survey does not cover all 50 states every week. Coverage varies by data series:</p>
+
+<table class="data-table">
+  <thead>
+    <tr>
+      <th>Series</th>
+      <th>Coverage</th>
+      <th>Update Frequency</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>National Average</td>
+      <td>All states, weighted by sales volume</td>
+      <td>Weekly</td>
+    </tr>
+    <tr>
+      <td>PADD Regional Averages</td>
+      <td>5 US regions (East Coast, Midwest, Gulf Coast, Rocky Mountain, West Coast)</td>
+      <td>Weekly</td>
+    </tr>
+    <tr>
+      <td>State-Level Prices</td>
+      <td>~21 states with sufficient survey volume (includes CA, TX, NY, FL, IL, PA, OH, and others)</td>
+      <td>Weekly</td>
+    </tr>
+    <tr>
+      <td>Metro Area Prices</td>
+      <td>Select major metro areas (varies by season)</td>
+      <td>Weekly</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="callout">
+  <p><strong>Important limitation:</strong> States not covered by the EIA's weekly state survey are shown using their PADD regional average as the best available estimate. These are clearly labeled on all state pages. The EIA explains this limitation in its <a href="https://www.eia.gov/petroleum/gasprices/methodology/" target="_blank" rel="noopener noreferrer">survey methodology documentation</a>.</p>
+</div>
+
+<h2 class="section">Price Component Breakdown</h2>
+<p>The retail price of gasoline is composed of four main cost categories. The percentages below represent approximate national averages in normal (non-crisis) market conditions. During the 2026 Strait of Hormuz crisis, the crude oil component rose to approximately 65% as geopolitical risk premiums inflated crude prices.</p>
+
+<div class="price-components">
+  <div class="pc-item">
+    <div class="label">Crude Oil</div>
+    <div class="pct">~55%</div>
+    <p>The dominant input cost. Brent crude and WTI (West Texas Intermediate) set the global benchmark. Every $10/barrel move in crude shifts pump prices approximately 24¢/gal over 2–3 weeks.</p>
+  </div>
+  <div class="pc-item">
+    <div class="label">Refining Costs & Margins</div>
+    <div class="pct">~20%</div>
+    <p>The "crack spread" — the cost and margin of converting crude oil into finished gasoline. Varies by season, refinery utilization, and fuel blend requirements (winter vs. summer blend).</p>
+  </div>
+  <div class="pc-item">
+    <div class="label">Taxes</div>
+    <div class="pct">~15%</div>
+    <p>Federal excise tax: 18.4¢/gal (fixed). State taxes: 14¢–77¢/gal depending on state. The tax component does not fluctuate with oil markets.</p>
+  </div>
+  <div class="pc-item">
+    <div class="label">Distribution & Retail</div>
+    <div class="pct">~10%</div>
+    <p>Pipeline transport, terminal storage, trucking to retail stations, and station-level margin. Typically stable. Individual station margins are typically 5–15¢/gal.</p>
+  </div>
+</div>
+
+<p>Source for component breakdown: <a href="https://www.eia.gov/energyexplained/gasoline/factors-affecting-gasoline-prices.php" target="_blank" rel="noopener noreferrer">EIA — Factors Affecting Gasoline Prices</a>.</p>
+
+<h2 class="section">Update Process</h2>
+<p>Our data pipeline runs automatically each Monday after the EIA publishes its weekly update:</p>
+
+<h3 class="sub">Step 1 — API Fetch</h3>
+<p>We query the EIA API v2 endpoint for the most recent weekly period. The request targets the <code>EMM_EPM0_PTE_NUS_DPG</code> series for the national regular gasoline average and corresponding PADD and state series codes. The API returns JSON with the current week's price, the prior week's price, and historical values used for trend calculations.</p>
+
+<h3 class="sub">Step 2 — Validation</h3>
+<p>All values are validated against reasonable bounds before display. A price outside the range of $1.50–$8.00/gal triggers a manual review flag rather than being published automatically. This prevents API errors or outlier data points from being displayed as factual prices.</p>
+
+<h3 class="sub">Step 3 — Derived Calculations</h3>
+<p>Week-over-week change (in dollars and percentage), year-over-year comparison, and 4-week moving average are calculated from the raw API data. These are derived figures — not sourced from the EIA directly — and are clearly labeled as calculated metrics throughout the site.</p>
+
+<h3 class="sub">Step 4 — Display</h3>
+<p>Updated prices are rendered on the homepage and all state/regional pages. The "Last updated" timestamp reflects the EIA publication date, not our server update time, to make clear that prices reflect official survey data rather than real-time pump prices.</p>
+
+<div id="ezoic-pub-ad-placeholder-132"></div>
+
+<h2 class="section">Forecast Methodology</h2>
+<p>Gas price forecasts on this site are forward-looking estimates, not guaranteed outcomes. They are based on three inputs:</p>
+
+<h3 class="sub">1. EIA Short-Term Energy Outlook (STEO)</h3>
+<p>The EIA publishes a monthly STEO that includes projected crude oil prices and retail gasoline price forecasts for the following 18 months. We use these projections as the baseline for our own forecast models. The STEO is available at <a href="https://www.eia.gov/steo/" target="_blank" rel="noopener noreferrer">eia.gov/steo</a>.</p>
+
+<h3 class="sub">2. Crude Oil Futures</h3>
+<p>Brent crude and WTI futures prices from the NYMEX and ICE exchanges provide forward-looking market consensus on where crude is heading. We apply the ~24¢/gal-per-$10/barrel conversion factor to translate crude futures into implied retail gasoline price ranges, accounting for the typical 2–4 week lag.</p>
+
+<h3 class="sub">3. Geopolitical and Seasonal Context</h3>
+<p>Forecasts are contextualized by current geopolitical events (e.g., the 2026 Strait of Hormuz closure and subsequent ceasefire), OPEC+ production decisions, US refinery utilization data, and seasonal demand patterns. Summer demand historically adds 20–40¢/gal above spring prices; winter demand typically subtracts a similar amount.</p>
+
+<div class="callout">
+  <p><strong>Forecast accuracy disclaimer:</strong> Gas price forecasts carry significant uncertainty — particularly during geopolitical disruptions. The EIA's STEO has a historical mean absolute error of approximately 15% for 12-month forecasts. Short-term (2–4 week) forecasts are more reliable, typically within 5–8%. All forecasts on this site should be treated as informed estimates, not financial predictions.</p>
+</div>
+
+<h2 class="section">What This Site Does Not Do</h2>
+<p><strong>We do not display real-time pump prices.</strong> The EIA's weekly survey lags actual pump prices by approximately 3–7 days. For real-time local prices, use GasBuddy or Google Maps.</p>
+<p><strong>We do not manually enter or estimate prices.</strong> Every price figure is fetched directly from the EIA API or calculated from EIA source data. No prices are invented, interpolated from non-EIA sources, or based on station-reported data.</p>
+<p><strong>We do not provide financial advice.</strong> All content on this site is for informational purposes only. Nothing here should be construed as investment, trading, or financial advice.</p>
+
+<h2 class="section">Data Corrections</h2>
+<p>If you believe a price displayed on this site is incorrect, please first verify against the <a href="https://www.eia.gov/petroleum/gasprices/" target="_blank" rel="noopener noreferrer">EIA's official weekly report</a>. Since all our data comes directly from the EIA API, a discrepancy likely indicates either a display bug on our end or a revision in the EIA's own data.</p>
+<p>Report discrepancies via our <a href="/contact.html">contact page</a>. We take data accuracy seriously and investigate all reported corrections within 24–48 hours.</p>
+
+<h2 class="section">External Data Sources Referenced in Editorial Content</h2>
+<p>In addition to EIA pricing data, our analysis and editorial content reference the following sources:</p>
+<ul style="color:#bbb;font-size:15px;line-height:2;padding-left:20px;margin-bottom:16px;">
+  <li><a href="https://www.eia.gov/steo/" target="_blank" rel="noopener noreferrer">EIA Short-Term Energy Outlook</a> — crude oil and gasoline forecasts</li>
+  <li><a href="https://www.opec.org/" target="_blank" rel="noopener noreferrer">OPEC Monthly Oil Market Report</a> — production schedules and demand data</li>
+  <li><a href="https://www.eia.gov/petroleum/supply/weekly/" target="_blank" rel="noopener noreferrer">EIA Weekly Petroleum Status Report</a> — US crude inventories and refinery utilization</li>
+  <li><a href="https://www.fhwa.dot.gov/policyinformation/travel_monitoring/tvt.cfm" target="_blank" rel="noopener noreferrer">FHWA Traffic Volume Trends</a> — US vehicle miles traveled data</li>
+  <li>Reuters, The Wall Street Journal, and Associated Press — geopolitical event reporting cited in context articles</li>
+</ul>
+
+</div>
+</main>
+
+<footer>
+  <div class="logo-sm">PUMP.</div>
+  <p>Data: EIA · Updated weekly · Not financial advice</p>
+  <nav>
+    <a href="/">Home</a>
+    <a href="/gas-prices-by-state.html">By State</a>
+    <a href="/gas-price-forecast-2026.html">Forecast</a>
+    <a href="/about.html">About</a>
+    <a href="/contact.html">Contact</a>
+    <a href="/privacy-policy.html">Privacy</a>
+  </nav>
+</footer>
+<script>ezstandalone.cmd.push(function(){ezstandalone.showAds(137,130,132);});</script>
+</body>
+</html>
